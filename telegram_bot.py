@@ -6,7 +6,7 @@ from environs import Env
 
 
 env = Env()
-env.read_env
+env.read_env()
 def detect_intent_texts(project_id, session_id, text, language_code):
 
     session_client = dialogflow.SessionsClient()
