@@ -1,6 +1,5 @@
 from google.cloud import dialogflow_v2 as dialogflow
 import json
-import os
 import logging
 from environs import Env
 from google.api_core.exceptions import InvalidArgument
