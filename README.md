@@ -1,1 +1,1 @@
-![image](https://github.com/ZhengYaWei1992/ZWProgressView/blob/master/Untitled3.gif)
+![image](https://github.com/jiezzzzzzz/support-bot/blob/master/demo_vk_bot.gif)
