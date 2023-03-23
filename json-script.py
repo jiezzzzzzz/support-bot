@@ -1,14 +1,12 @@
 from google.cloud import dialogflow_v2 as dialogflow
 import json
-import logging
 from environs import Env
-from google.api_core.exceptions import InvalidArgument
 from google.cloud.dialogflow_v2beta1 import IntentsClient
 
 env = Env()
 env.read_env()
 
-logger = logging.getLogger('dialogflow_bot_logger')
+project_id = env('PROJECT_ID')
 env("GOOGLE_APPLICATION_CREDENTIALS")
 
 
@@ -30,12 +28,7 @@ def create_intent(project_id, display_name, training_phrases_parts,
         display_name=display_name,
         training_phrases=training_phrases,
         messages=[message])
-    try:
-        response = intents_client.create_intent(parent=parent, intent=intent)
-    except InvalidArgument as message:
-        logger.debug(f'{message}')
-    else:
-        logger.debug('Intent created: {}'.format(response))
+    response = intents_client.create_intent(parent=parent, intent=intent)
 
 
 def train_agent(project_id):
@@ -46,11 +39,6 @@ def train_agent(project_id):
 
 
 def main():
-    project_id = env('PROJECT_ID')
-
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    logger.setLevel(logging.DEBUG)
 
     with open('questions.json', 'r') as file:
         intents = json.load(file)

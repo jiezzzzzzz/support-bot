@@ -12,13 +12,13 @@ project_id = env('PROJECT_ID')
 env("GOOGLE_APPLICATION_CREDENTIALS")
 
 
-def echo(event, vk_api):
-    user_id = event.user_id
-    text = event.text
+def start_bot(events, api):
+    user_id = events.user_id
+    text = events.text
     intent = detect_intent_texts(project_id, user_id, text, 'ru')
     if not intent.query_result.intent.is_fallback:
-        vk_api.messages.send(
-            user_id=event.user_id,
+        api.messages.send(
+            user_id=events.user_id,
             message=intent.query_result.fulfillment_text,
             random_id=random.randint(1, 1000)
         )
@@ -30,4 +30,4 @@ if __name__ == "__main__":
     longpoll = VkLongPoll(vk_session)
     for event in longpoll.listen():
         if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-            echo(event, vk_api)
+            start_bot(event, vk_api)
