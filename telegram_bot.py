@@ -1,4 +1,3 @@
-import logging
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 from environs import Env
@@ -9,13 +8,6 @@ env = Env()
 env.read_env()
 lang = env('LANGUAGE')
 project_id = env('PROJECT_ID')
-
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
-
-logger = logging.getLogger(__name__)
 
 
 def start(update: Update, context: CallbackContext) -> None:
@@ -32,7 +24,6 @@ def reply(update: Update, context: CallbackContext) -> None:
 
 
 def main() -> None:
-
     updater = Updater(env('TELEGRAM_TOKEN'))
 
     dispatcher = updater.dispatcher
