@@ -1,30 +1,14 @@
 import logging
-from google.cloud import dialogflow
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 from environs import Env
+from detect_intent import detect_intent_texts
 
 
 env = Env()
 env.read_env()
-
-
-def detect_intent_texts(project_id, session_id, text, language_code):
-
-    session_client = dialogflow.SessionsClient()
-
-    session = session_client.session_path(project_id, session_id)
-    print("Session path: {}\n".format(session))
-
-    text_input = dialogflow.TextInput(text=text, language_code=language_code)
-
-    query_input = dialogflow.QueryInput(text=text_input)
-
-    response = session_client.detect_intent(
-        request={"session": session, "query_input": query_input}
-    )
-
-    return 'Я могу сказать: {}'.format(response.query_result.fulfillment_text)
+lang = env('LANGUAGE')
+project_id = env('PROJECT_ID')
 
 
 logging.basicConfig(
@@ -43,11 +27,12 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
 def reply(update: Update, context: CallbackContext) -> None:
-    text = detect_intent_texts(env('PROJECT_ID'), update.message.from_user['id'], update.message.text, env('LANGUAGE'))
+    text = detect_intent_texts(project_id, update.message.from_user['id'], update.message.text, lang)
     update.message.reply_text(text)
 
 
 def main() -> None:
+
     updater = Updater(env('TELEGRAM_TOKEN'))
 
     dispatcher = updater.dispatcher

@@ -1,20 +1,14 @@
 from google.cloud import dialogflow_v2 as dialogflow
 import json
 from environs import Env
+from google.cloud import dialogflow_v2beta1
 from google.cloud.dialogflow_v2beta1 import IntentsClient
-
-env = Env()
-env.read_env()
-
-project_id = env('PROJECT_ID')
-env("GOOGLE_APPLICATION_CREDENTIALS")
 
 
 def create_intent(project_id, display_name, training_phrases_parts,
                   message_texts):
     intents_client = dialogflow.IntentsClient()
     parent = IntentsClient.project_agent_path(project_id)
-    # parent = intents_client.common_project_path(project_id)
 
     training_phrases = []
     for training_phrases_part in training_phrases_parts:
@@ -32,24 +26,24 @@ def create_intent(project_id, display_name, training_phrases_parts,
 
 
 def train_agent(project_id):
-    from google.cloud import dialogflow_v2beta1
     client = dialogflow_v2beta1.AgentsClient()
     parent = IntentsClient.project_agent_path(project_id)
     client.train_agent(parent)
 
 
 def main():
-
-    with open('questions.json', 'r') as file:
+    env = Env()
+    env.read_env()
+    project_id = env('PROJECT_ID')
+    with open(env('FILENAME'), 'r') as file:
         intents = json.load(file)
 
-    for intent in intents:
-        display_name = intent
-        intent_body = intents[display_name]
+    for intent in intents.items():
+        intent_body = intent
         training_phrases_parts = intent_body['questions']
         message_texts = {intent_body['answer']}
 
-        create_intent(project_id, display_name, training_phrases_parts,
+        create_intent(project_id, intent, training_phrases_parts,
                       message_texts)
 
     train_agent(project_id)

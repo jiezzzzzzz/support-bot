@@ -2,14 +2,7 @@ import random
 import vk_api as vk
 from vk_api.longpoll import VkLongPoll, VkEventType
 from environs import Env
-from telegram_bot import detect_intent_texts
-
-env = Env()
-env.read_env()
-
-token = env('VK_SECRET_TOKEN')
-project_id = env('PROJECT_ID')
-env("GOOGLE_APPLICATION_CREDENTIALS")
+from detect_intent import detect_intent_texts
 
 
 def start_bot(events, api):
@@ -25,6 +18,11 @@ def start_bot(events, api):
 
 
 if __name__ == "__main__":
+    env = Env()
+    env.read_env()
+
+    token = env('VK_SECRET_TOKEN')
+    project_id = env('PROJECT_ID')
     vk_session = vk.VkApi(token=env('VK_SECRET_TOKEN'))
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)
