@@ -25,7 +25,7 @@
 1. Скачать проект: 
 
 ```
-git clone 
+git clone https://github.com/jiezzzzzzz/support-bot
 ```
 
 2. Установить зависимости: 
