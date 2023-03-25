@@ -16,7 +16,7 @@
 
 Снабжен нейросетью <code>dialogflow</code>, работает с ее API. Написан на <code>python-telegram-bot</code> и <code>vk-api</code>.
 
-Бота можно обучить по собственному сценарию, скормив ему json-файл с вопросами и ответами, для этого предусмотрен специальный файл <code>json-script.py</code>.
+Бота можно обучить по собственному сценарию, скормив ему json-файл с вопросами и ответами, для этого предусмотрен специальный файл <code>training_script.py</code>.
 
 ---
 
@@ -73,5 +73,5 @@ python vk_bot.py
 2. Запустить обучающий скрипт: 
 
 ```
-python json-script.py 
+python training_script.py 
 ```
