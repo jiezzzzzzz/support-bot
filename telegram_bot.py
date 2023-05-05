@@ -19,8 +19,15 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
 def reply(update: Update, context: CallbackContext) -> None:
-    text = detect_intent_texts(project_id, update.message.from_user['id'], update.message.text, lang)
-    update.message.reply_text(text)
+    chat_id = update.message.chat_id
+    text = update.message.text
+    intent = detect_intent_texts(
+        project_id=project_id,
+        session_id=chat_id,
+        text=text,
+        language_code='ru'
+    )
+    update.message.reply_text(text=intent.query_result.fulfillment_text)
 
 
 def main() -> None:
