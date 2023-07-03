@@ -38,13 +38,14 @@ def main():
     with open(env('FILENAME'), 'r') as file:
         intents = json.load(file)
 
-    for intent in intents.items():
-        intent_body = intent
-        training_phrases_parts = intent_body['questions']
-        message_texts = {intent_body['answer']}
+    for intent_name, intent_body in intents.items():
+        if 'questions' not in intent_body or 'answer' not in intent_body:
+            continue
 
-        create_intent(project_id, intent, training_phrases_parts,
-                      message_texts)
+        training_phrases_parts = intent_body['questions']
+        message_texts = [intent_body['answer']]
+
+        create_intent(project_id, intent_body, training_phrases_parts, message_texts)
 
     train_agent(project_id)
 

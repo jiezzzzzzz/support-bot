@@ -4,12 +4,6 @@ from environs import Env
 from detect_intent import detect_intent_texts
 
 
-env = Env()
-env.read_env()
-lang = env('LANGUAGE')
-project_id = env('PROJECT_ID')
-
-
 def start(update: Update, context: CallbackContext) -> None:
     user = update.effective_user
     update.message.reply_markdown_v2(
@@ -18,7 +12,7 @@ def start(update: Update, context: CallbackContext) -> None:
     )
 
 
-def reply(update: Update, context: CallbackContext) -> None:
+def reply(update: Update, context: CallbackContext, project_id: str) -> None:
     chat_id = update.message.chat_id
     text = update.message.text
     intent = detect_intent_texts(
@@ -31,6 +25,11 @@ def reply(update: Update, context: CallbackContext) -> None:
 
 
 def main() -> None:
+    env = Env()
+    env.read_env()
+    lang = env('LANGUAGE')
+    project_id = env('PROJECT_ID')
+
     updater = Updater(env('TELEGRAM_TOKEN'))
 
     dispatcher = updater.dispatcher
